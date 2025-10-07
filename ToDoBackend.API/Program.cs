@@ -40,13 +40,22 @@ foreach (System.Collections.DictionaryEntry env in Environment.GetEnvironmentVar
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? builder.Configuration["ConnectionStrings__DefaultConnection"]
-    ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
-    ?? throw new InvalidOperationException("Database connection string not configured");
+    ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
 
-Console.WriteLine($"Connection string loaded: {!string.IsNullOrEmpty(connectionString)}");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+if (!string.IsNullOrEmpty(connectionString) && !connectionString.Contains(":memory:"))
+{
+    Console.WriteLine($"Connection string loaded: {!string.IsNullOrEmpty(connectionString)}");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+}
+else if (builder.Environment.IsEnvironment("Testing"))
+{
+    Console.WriteLine("Testing environment detected - DbContext will be configured by tests");
+}
+else
+{
+    throw new InvalidOperationException("Database connection string not configured");
+}
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -150,3 +159,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
