@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: todobackend_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-defaultdb}
+      MYSQL_USER: ${MYSQL_USER:-todouser}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-todopassword}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - todobackend-network
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todobackend_api
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - ConnectionStrings__DefaultConnection=${ConnectionStrings__DefaultConnection}
+      - JwtSettings__Secret=${JwtSettings__Secret}
+      - JwtSettings__Issuer=${JwtSettings__Issuer:-ToDoBackend}
+      - JwtSettings__Audience=${JwtSettings__Audience:-ToDoBackend}
+      - JwtSettings__ExpirationMinutes=${JwtSettings__ExpirationMinutes:-30}
+      - ASPNETCORE_ENVIRONMENT=Development
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - todobackend-network
+
+volumes:
+  mysql_data:
+
+networks:
+  todobackend-network:
+    driver: bridge
