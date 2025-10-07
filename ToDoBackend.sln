@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoBackend.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoBackend.Application", "ToDoBackend.Application\ToDoBackend.Application.csproj", "{B3C20EE8-3A3A-4D7B-A9FA-03DD5E3723F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoBackend.Tests", "ToDoBackend.Tests\ToDoBackend.Tests.csproj", "{AC964AC3-CE22-403E-A4D4-493FF3DB950E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{B3C20EE8-3A3A-4D7B-A9FA-03DD5E3723F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3C20EE8-3A3A-4D7B-A9FA-03DD5E3723F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3C20EE8-3A3A-4D7B-A9FA-03DD5E3723F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC964AC3-CE22-403E-A4D4-493FF3DB950E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC964AC3-CE22-403E-A4D4-493FF3DB950E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC964AC3-CE22-403E-A4D4-493FF3DB950E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC964AC3-CE22-403E-A4D4-493FF3DB950E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
